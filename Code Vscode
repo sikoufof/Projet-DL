@@ -16,10 +16,9 @@ from IPython import get_ipython
 pd.options.display.max_rows = 8
 #%%
 
-#Importation et suppression des doublons 
+#Importation de la dataset 
 #%%
 Jdd_projet = pd.read_csv("gares-peage-2019.csv", sep = ';', header = 0)
-#del Jdd_projet['st_length_']
 Jdd_projet
 #%%
 #énumération des colonnes
@@ -61,7 +60,6 @@ missing_values = ["n/a", "na", "--"]
 Jdd_projet = pd.read_csv("gares-peage-2019.csv", sep = ';', header = 0, na_values = missing_values)
 Jdd_projet
 #%%
-
 #Suppression des valeurs manquantes
 
 #%%
@@ -69,15 +67,7 @@ Jdd_projet = Jdd_projet.dropna()
 Jdd_projet
 print(Jdd_projet.isnull())
 #%%
-# Selection des colonnes qu'on a besoin
-
-
-# Remplacer les valeurs manquantes de la colonne 'objectid_1 en utilisant la médiane
-#%%
-median = Jdd_projet['objectid_1'].median()
-Jdd_projet['objectid_1'].fillna(median, inplace=True)
-Jdd_projet['objectid_1']
-Jdd_projet['objectid_1'].isnull()
+# Calcul des distances 
 
 #%%
 #Conversion des valeurs 
@@ -99,20 +89,6 @@ x2,y2 = transform(inProj,outProj,T,P)
 print(x2,y2)
 x2
 y2
-# Remplacer les valeurs manquantes de la colonne 'objectid en utilisant la médiane
-#%%
 
 #%%
 
-# Remplacer les valeurs manquantes de la colonne 'objectid_1 en utilisant la médiane
-#%%
-
-#%%
-
-# Remplacer les valeurs manquantes de la colonne 'num_route' en utilisant la médiane
-#%%
-cat_Jdd = Jdd_projet.apply(lambda x:x.fillna(x.value_counts().index[12])
-#print(Jdd_projet['num_route'].describe())
-#print(Jdd_projet['num_route'].isnull())
-   
-#%%
