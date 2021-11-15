@@ -16,4 +16,4 @@ entre Montpellier, Perpignan, Pamier et Toulouse.
 - Premier Dataframe sur les distances entre chaque péages/sortie (Nicolas)
 - Second Dataframe sur les prix de chaque sortie (Sikou)
 Visualisation des données 2) :
--...
+- Pour le reste du travail on le fera ensemble.
