@@ -2,18 +2,16 @@
 Pralon Nicolas (nicolas.pralon@etu.umontpellier.fr)
 Fofana Sikou (sikou.fofana@etu.umontpellier.fr)
 
-L'objectif principale du projet étant de décrire la politique tarifaire de l'entreprise ASF (La Société Française de Voirie) sur les autoroutes (A9, A61, A62, A66, A75 et A709)
-entre Montpellier, Perpignan, Pamier et Toulouse. 
-# Préliminaires 1)
-- Selections/nettoyages des Dataframes récoltés(sources) ; selections des portions de routes, des distances entre les péages, leurs coûts, coordonnées.
-- Créations de Dataframes contenant respectivement les prix entre chaque péages/sortie et les distances entre chaque péage/sortie.
-# Visualisation des données 2)
-- Créations de graphiques,histogrammes interactifs (plotly, Widgets) en fonction des autoroutes, les péages pris et du coûts moyen entre chaque entrée/sortie.
-- Elaborations d'un algorithme permettant de calcul le trajet de coût minimal d'un point initial à une destination (sur les autoroutes étudiées) avec une condition de k entrée/sortie.
-# Tâches attribuées 
-- Nettoyages des Dataframe utilisés (ensemble)
-- Préliminaires 1) :
-- Premier Dataframe sur les distances entre chaque péages/sortie (Nicolas)
-- Second Dataframe sur les prix de chaque sortie (Sikou)
-Visualisation des données 2) :
-- Pour le reste du travail on le fera ensemble.
+The main objective of the project is to describe the pricing policy of the company ASF (La Société Française de Voirie) on the highways (A9, A61, A62, A66, A75 and A709)
+between Montpellier, Perpignan, Pamier and Toulouse.
+# Preliminaries
+- Selections / cleanings of collected Dataframes (sources); selections of road sections, distances between tolls, their costs, coordinates.
+- Creation of Dataframes containing respectively the prices between each toll / exit and the distances between each toll / exit.
+# Data visualization
+- Creation of graphs, interactive histograms (plotly, Widgets) according to the highways, the tolls taken and the average cost between each entry / exit.
+- Development of an algorithm allowing the calculation of the minimum cost journey from an initial point to a destination (on the highways studied) with a condition of k entry / exit.
+# Assigned tasks
+- Dataframe cleanings used (together)
+- First Dataframe on the distances between each toll / exit (Nicolas)
+- Second Dataframe on the prices of each release (Sikou)
+- For the rest of the work we will do it together.
