@@ -2,7 +2,7 @@
 Pralon Nicolas (nicolas.pralon@etu.umontpellier.fr)
 Fofana Sikou (sikou.fofana@etu.umontpellier.fr)
 
-The main objective of the project is to describe the pricing policy of the company ASF (La Société Française de Voirie) on the highways (A9, A61, A62, A66, A75 and A709)
+The main objective of the project is to describe the pricing policy of the company ASF (The French Road Company) on the highways (A9, A61, A62, A66, A75 and A709)
 between Montpellier, Perpignan, Pamier and Toulouse.
 # Preliminaries
 - Selections / cleanings of collected Dataframes (sources); selections of road sections, distances between tolls, their costs, coordinates.
