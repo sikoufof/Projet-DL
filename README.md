@@ -1,6 +1,6 @@
 # Projet-DL 
 Pralon Nicolas (nicolas.pralon@etu.umontpellier.fr)
-Fofana Sikou (sikou.fofana@etu.umontpellier.fr)
+Fofana Sikou (sikou.fofana01@etu.umontpellier.fr)
 
 The main objective of the project is to describe the pricing policy of the company ASF (The French Road Company) on the highways (A9, A61, A62, A66, A75 and A709)
 between Montpellier, Perpignan, Pamier and Toulouse.
