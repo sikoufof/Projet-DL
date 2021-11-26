@@ -20,6 +20,12 @@ pd.options.display.max_rows = 8
 #%%
 Jdd_projet = pd.read_csv("gares-peage-2019.csv", sep = ';', header = 0)
 Jdd_projet
+
+dta_Routes = pd.read_csv("trace-du-reseau-autoroutier-doccitanie.csv", sep = ';', header = 0)
+dta_Routes
+
+Coordonnees = pd.read_csv("coordonnees.csv", sep = ';', header = 0)
+Coordonnees
 #%%
 #énumération des colonnes
 #%%
