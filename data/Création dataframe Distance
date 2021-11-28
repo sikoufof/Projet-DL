@@ -1,0 +1,52 @@
+#%%
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from functools import partial
+from pyproj import CRS
+from pyproj import Proj, transform
+# widget manipulation
+from ipywidgets import widgets, interact, interactive, fixed, interact_manual
+
+from download import download  # download data / avoid re-downloading
+from IPython import get_ipython
+
+pd.options.display.max_rows = 8
+
+#%%
+#La colonne : Nom gare a été remplacé par NomGare dans le csv de base, y'a des espaces qui traines
+dta1 = pd.read_csv("gares-peage-2019.csv", sep = ';')
+dta1.rename({' NomGare ':'NomGare'},axis=1,inplace=True)
+
+#il doit y avoir une valeur x et y dans le csv sous forme de string:'2' à la place de seulement 2, ex dta1.loc[0,'x']='2'
+for i in range(len(dta1.index)):
+    dta1.loc[i,'x']=float(dta1.loc[i,'x'].replace(',','.'))
+    dta1.loc[i,'y']=float(dta1.loc[i,'y'].replace(',','.'))
+
+#Extraction des données relatives aux autoroutes A9, A709, A61, A62, A75 et A66
+dta_routes = dta1[(dta1.route=="A0009")|(dta1.route=="A0709")|(dta1.route=="A0061")|(dta1.route=="A0062")|(dta1.route=="A0075")|(dta1.route=="A0066")]  
+dta_routes = dta_routes[['route','NomGare','x','y']]
+# a été rectifié : dta_routes= dta_routes.iloc[:,[1,13,7,8]] #pb sur dta1.Nom gare / dta1['Nom gare'] / dta1[['Nom gare']]
+
+# réafectattions des indices
+dta_routes.reset_index(drop = True, inplace = True)
+dta_routes
+
+#transformation des coordonnées Lambert93 en coordonéees GPS
+from pyproj import Proj, transform
+
+X = dta_routes['x']
+Y = dta_routes['y']
+inProj = Proj(init='epsg:2154')
+outProj = Proj(init='epsg:4326')
+GPS=[]
+for i in range(len(dta_routes.index)):
+    GPS.append(transform(inProj,outProj,X[i],Y[i]))
+GPS
+for i in range(len(GPS)):
+    dta_routes.loc[i,'x'],dta_routes.loc[i,'y']=GPS[i]
+dta_routes
+
+#Transformation en fichier .csv
+dta_routes.to_csv('routes.csv', sep = ';')
