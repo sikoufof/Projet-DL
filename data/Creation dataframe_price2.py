@@ -5,7 +5,6 @@ import pandas as pd
 
 # Rechargement de la base des données des prix que nous avons crée par excel
 price = pd.read_csv("DataFrame_price.csv", sep=';')
-price
 price.info()
 # Nettoyage de la base de données
 #Suppression des gares qui ne nous intéressent pas c'est à dire celles qui n'ont pas de péage
