@@ -4,13 +4,13 @@ from download import download
 import pandas as pd
 
 #%%
-# téléchargement du fichier construit par Abdelmalek
+# Rechargement de la base des données des prix que nous avons crée par excel
 price = pd.read_csv("DataFrame_price.csv", sep=';')
 price.info()
 
 #%%
-# Nettoyage
-#Suppression des gares qui ne nous intéressent pas
+# Nettoyage de la base de données
+#Suppression des gares qui ne nous intéressent pas c'est à dire celles qui n'ont pas de péage
 del price['Vendargues']
 del price['Montpellier est']
 del price['Montpellier sud']
@@ -37,5 +37,6 @@ price.set_index(' ', inplace=True)
 
 # Correction pour une seule donnée
 price = price.fillna(0)
+#Création de la base de données finale qui contient le prix des péages que nous avons retenus
 #%%
 price.to_csv('DataFrame_price2.csv')
