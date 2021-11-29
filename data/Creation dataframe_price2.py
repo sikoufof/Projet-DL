@@ -35,4 +35,3 @@ price.set_index(' ', inplace=True)
 price = price.fillna(0)
 #Création de la base de données finale qui contient le prix des péages que nous avons retenus
 price.to_csv('DataFrame_price2.csv')
-price
