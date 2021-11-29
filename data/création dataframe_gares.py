@@ -11,7 +11,6 @@ from pyproj import Proj, transform
 inProj = Proj(init='epsg:2154')
 outProj = Proj(init='epsg:4326')
 gares = pd.read_csv('gares-peage-2019.csv', sep=';',usecols=["route", "x", "y", ' Nom gare '],index_col=' Nom gare ', decimal=",")
-gares
 #%%
 
 # Selection des lignes que nous avons besoin
