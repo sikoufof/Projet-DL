@@ -1,0 +1,19 @@
+Installation_Utilisation 
+===========================
+
+
+Installation
+------------
+
+Comment installer le logiciel "fat"?
+
+Il faut juste cliquer sur le "Setup" nommé "fat.py" pour le télécharger et il sera prêt pour l'utilisation.
+
+Utilisation
+-----------
+
+Comment utiliser le logiciel "fat"?
+
+Vous prenez deux sorties quelconques sur le trajet Montpellier, Perpignan, Pamier et Toulouse et il vous renvoie le tarif du trajet.
+
+

@@ -12,7 +12,7 @@ PROJET_HAX712X_2021
 
 .. toctree::
    :maxdepth: 2
-   :caption: Ojectif 
+   :caption: Objectif 
    
    Objectif/Objectif
 
@@ -28,10 +28,16 @@ PROJET_HAX712X_2021
 
 .. toctree::
    :maxdepth: 2
-   :caption: Installation
+   :caption: Installation 
 
 
    Installation/Installation
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Utilisation
+
+   Utilisation/Utilisation   
 
 
 .. toctree::

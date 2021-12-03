@@ -1,3 +1,5 @@
-vizi
+Visualisation
 ===========================
-Pour commencer il faudra ......
+
+Nous vous présentons un aperçu de ce que le logiciel produit comme résultat.
+
