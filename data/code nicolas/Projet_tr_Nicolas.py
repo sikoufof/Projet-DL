@@ -1,11 +1,15 @@
 #%%
+from networkx.algorithms.shortest_paths.weighted import dijkstra_path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import itertools
+from itertools import combinations
 from functools import partial
 from pyproj import CRS
 from pyproj import Proj, transform
+
 # widget manipulation
 from ipywidgets import widgets, interact, interactive, fixed, interact_manual
 
@@ -19,10 +23,15 @@ pd.options.display.max_rows = 8
 dta1 = pd.read_csv("gares-peage-2019.csv", sep = ';')
 dta1.rename({' NomGare ':'NomGare'},axis=1,inplace=True)
 
+dta2 = pd.read_csv("trace-du-reseau-autoroutier-doccitanie.csv", sep = ';')
+dta_routes2 = dta2[(dta2.num_route=="A9")|(dta2.num_route=="A709")|(dta2.num_route=="A61")|(dta2.num_route=="A62")|(dta2.num_route=="A75")|(dta2.num_route=="A66")]  
+#faut aller chercher les routes.
+
+
 data_co = pd.read_csv("coordonnees.csv", sep = ',')
 
 price = pd.read_csv("DataFrame_price.csv", sep=';')
-price.info()
+price = price.fillna(0)
 
 #%%
 # Création du tableau des prix 
@@ -51,10 +60,10 @@ del price['Frontiere Espagnole']
 del price['Peage de Toulouse sud/est']
 price = price.drop(index=[0, 1, 2, 3, 4, 18, 19, 29, 30, 31,
                         33, 34, 35, 36, 37, 38, 39, 40, 41, 42])
-price.set_index(' ', inplace=True)
 
-# Correction pour une seule donnée
-price = price.fillna(0)
+a = list(price.iloc[:,0])
+price.index = a
+
 #Création de la base de données finale qui contient le prix des péages que nous avons retenus
 price.to_csv('DataFrame_price2.csv')
 
@@ -101,9 +110,24 @@ for i in range(len(GPS)):
     dta_routes.loc[i,'x'],dta_routes.loc[i,'y']=GPS[i]
 dta_routes
 
+#On garde les routes nous concernant, on supprime donc les autres
+dta_routes = dta_routes.drop(0)
+dta_routes = dta_routes.drop(1)
+dta_routes = dta_routes.drop(2)
+dta_routes = dta_routes.drop(3)
+dta_routes = dta_routes.drop(5)
+dta_routes = dta_routes.drop(6)
+dta_routes = dta_routes.drop(7)
+dta_routes = dta_routes.drop(18)
+dta_routes = dta_routes.drop(31)
+dta_routes = dta_routes.drop(32)
+dta_routes = dta_routes.drop(33)
+dta_routes = dta_routes.drop(34)
+dta_routes = dta_routes.drop(35)
+# il en reste à supprimer, mais on utilise coordonnées 
+
 #Transformation en fichier .csv
 dta_routes.to_csv('routes.csv', sep = ';')
-
 
 
 #Créations des portions de routes en 5.
@@ -128,9 +152,6 @@ def transforme(a):
             return(i)
     return("Entrée/sortie invalide")
 
-def transforme_nom(a):
-    
-
 
 def id_portion(a):
     a = transforme(a)
@@ -151,7 +172,7 @@ def r(L):
         a[-(i+1)] = L[i]
     return(a)
 
-def chemin(e,s):
+def chemin(e,s): 
     e = transforme(e)
     s = transforme(s)
     i_e = id_portion(e)
@@ -163,6 +184,8 @@ def chemin(e,s):
     pp_e = position_portion(e)
     pp_s = position_portion(s)
 
+    if e ==s:
+        return("Vous ne prenez aucun itinéraire")
     if (e == 29 and s == 30):
         return("Itinéraire impossible")
     if (e == 30 and s == 29):
@@ -193,100 +216,108 @@ def chemin(e,s):
         else :
             return( r(P[i_e][0][min_pe:pp_e+1]) + r(P[2][0]) + r(P[i_s][0][pp_s:max_ps+1]))
 
+def trajet(e,s,k):
+    L = []
+    for i in(combinations(chemin(3,9),k+2)): 
+        if (list(i)[0]== e) and (list(i)[-1]==s):
+            L.append(list(i))
+    return(L)
 
-def cout(e,s):
-    chemin = chemin(e,s)
-    prix = [0]*(len(chemin))
+def cout_direct(e,s):
+    prix = price.loc[e,s]
+    return(prix)
 
-VENDARGUES
-BRAM
-
-def MoinsCherChemin(e,s):
-    chemin = chemin(e,s)
-    for 
-
-
-
-
-
-
+def prix_chemin(e,s,k):
+    L = trajet(e,s,k)
+    long_L = len(L)
+    L2 = [0]*long_L
+    for i in range(long_L):
+        L_c = L[i]
+        prix_c = 0
+        for j in range(len(L_c)-1):
+            prix_c += cout_direct(L_c[j],L_c[j+1])
+        L2[i] = prix_c
 
 
-
-
-
-
+def sortie_moins_cher(LB):
+    '''LB est une liste de string (chemin)'''
+    long_LB = len(LB)
+    if (long_LB == 2) | (long_LB == 1) | (long_LB == 0) :
+        return("aucune sortie")
+    indice = 1
+    prix = cout_direct(LB[0],LB[1])
+    for i in range(2,long_LB):
+        prix_2 = cout_direct(LB[0],LB[i])
+        if prix > prix_2:
+            prix = prix_2
+            indice = i
+    return([prix,LB[indice]])
 
 
 
 #%%
-#énumération des colonnes
-#%%
+def chemin_k_sortie(k,e,s):
+    ch = chemin(e,s)
+    long_ch = len(ch)
+    sortie = 0
+    if (long_ch == 2) :
+        return("faites un allé direct")
+    if (long_ch == 1) | (long_ch == 0) :
+        return("aucune entré/sortie indiqué")
+    prix_compare = [ [], [ [],[] ] ]
+    for i in range(1,len(ch)):
+        prix_compare[0].append(cout_direct(e,i)[0])
+        prix_compare[1][0].append(transforme(cout_direct(e,i)[1]))
+        prix_compare[1][1].append(sortie)
 
-print(Jdd_projet.columns)
+def dijkstra(e,s,k):
+    ch = chemin(e,s)
+    long_ch = len(ch)
+    if (long_ch == 2) :
+        return("faites un allé direct")
+    if (long_ch == 1) | (long_ch == 0) :
+        return("aucune entré/sortie indiqué")
+    liste_op = [e]
+    k_c = k
+    n = 0
+    chemin_co = chemin(e,s)
+    prix = 0
+    l_prix = [[0,0]]*k
+    while (n!=300) | (k_c != 0) | (len(chemin_co) != 2):
+        prix_co,sortie_EV = sortie_moins_cher(chemin_co)
+        prix_cu = prix_co + prix
+        if prix_cu <= min(l_prix):
 
-#%%
 
-#displaying the first five rows of dataset 
-#%%
-print(Jdd_projet.head())
-#%%
-#descrition of data
-#%%
-print(Jdd_projet.describe(include = 'all'))
-print(Jdd_projet.info())
-#%%
-#displayinf last five rows of dataset
-#%%
-print(Jdd_projet.tail())
-#%%
-# read the data null
-#%%
-print(Jdd_projet.isnull())
-#%%
-#Utilisation de la fonction isna()
-#%%
-print(Jdd_projet.isna())
-print(Jdd_projet.isna().any())
+        dijkstra_etape(k_c,)
+    return(liste_op)
 
-#Cette fonction donne la somme des valeurs nulls dans le jeu de données
-#%%
-Jdd_projet.isna().sum()
-#%%
-# Faire une liste de types de valeurs manquantes
-#%%
-missing_values = ["n/a", "na", "--"]
-Jdd_projet = pd.read_csv("gares-peage-2019.csv", sep = ';', header = 0, na_values = missing_values)
-Jdd_projet
-#%%
-#Suppression des valeurs manquantes
 
-#%%
-Jdd_projet = Jdd_projet.dropna()
-Jdd_projet
-print(Jdd_projet.isnull())
-#%%
-# Calcul des distances 
+def dijkstra_etape(k,trajet,list_p):
 
-#%%
-#Conversion des valeurs 
-#%%
-#X1=Jdd_projet['x']
-#X2=Jdd_projet['y']
-
-inProj = Proj("epsg:2154")
-outProj = Proj("epsg:4326")
-crs_deprecated = CRS("epsg:2154")
-crs = CRS("epsg:2154")
-crs == crs_deprecated
+    prix_p = P_S[0][0]
+    k_p = k
+    if k_p != 0: 
+        a = sortie_moins_cher(chemin(P_S[1],s))
+        prix_c = a[0]
+        prix_cu = prix_p + prix_c
+        if prix_cu <= min(P_S[0][1:]):
+            k_p = k_p - 1
+            up_grade(P_S,prix_cu,)
 
 
 
-T= 671659,72
-P= 6900724,84
-x2,y2 = transform(inProj,outProj,T,P)
-print(x2,y2)
-x2
-y2
 
-#%%
+    a = sortie_moins_cher(list)
+    b = sortie_moins_cher(list[a[1]:])#à rectifier 
+    prix_mi_tr = a[0]+b[0]
+    del a[0][0]
+
+    if prix_mi_tr <= min(a[0]):
+        return()
+    l = sorted(list)
+    p = list[0]
+    i = 0
+    for i in range(len(l)):
+        if p < list[i+1]:
+
