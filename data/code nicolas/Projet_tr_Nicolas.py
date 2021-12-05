@@ -24,7 +24,7 @@ dta1 = pd.read_csv("gares-peage-2019.csv", sep = ';')
 dta1.rename({' NomGare ':'NomGare'},axis=1,inplace=True)
 
 dta2 = pd.read_csv("trace-du-reseau-autoroutier-doccitanie.csv", sep = ';')
-dta_routes2 = dta2[(dta2.num_route=="A9")|(dta2.num_route=="A709")|(dta2.num_route=="A61")|(dta2.num_route=="A62")|(dta2.num_route=="A75")|(dta2.num_route=="A66")]  
+dta_routes2 = dta2[(dta2.num_route=="A0009")|(dta2.num_route=="A0709")|(dta2.num_route=="A0061")|(dta2.num_route=="A0062")|(dta2.num_route=="A0075")|(dta2.num_route=="A0066")]  
 #faut aller chercher les routes.
 
 
@@ -32,6 +32,14 @@ data_co = pd.read_csv("coordonnees.csv", sep = ',')
 
 price = pd.read_csv("DataFrame_price.csv", sep=';')
 price = price.fillna(0)
+
+price.columns = ([0]+list(data_co.NOMGARE))
+price.index = list(data_co.NOMGARE)
+
+#price.columns = map(lambda x: str(x).upper(), price.columns)
+#a = list(price.iloc[:,0])
+#price.index = a
+#price.index = map(lambda x: str(x).upper(), price.index)
 
 #%%
 # Création du tableau des prix 
@@ -61,8 +69,7 @@ del price['Peage de Toulouse sud/est']
 price = price.drop(index=[0, 1, 2, 3, 4, 18, 19, 29, 30, 31,
                         33, 34, 35, 36, 37, 38, 39, 40, 41, 42])
 
-a = list(price.iloc[:,0])
-price.index = a
+
 
 #Création de la base de données finale qui contient le prix des péages que nous avons retenus
 price.to_csv('DataFrame_price2.csv')
@@ -143,6 +150,7 @@ P=[P1,P2,P3,P4,P5]
 PP = P1[0]+P2[0]+P3[0]+P4[0]+P5[0]
 
 def transforme(a):
+    '''transforme le nom de la sortie en entier parmis la "liste Sortie" '''
     if a in PP:
         return(a)
     for i in range(len(data_co.NOMGARE)):
@@ -152,14 +160,24 @@ def transforme(a):
             return(i)
     return("Entrée/sortie invalide")
 
+def re_transforme(a):
+    if a in (list(data_co.NOMGARE)):
+        return(a)
+    for i in range(len(data_co.NOMGARE)):
+        b = data_co.NOMGARE[i]
+        if a == transforme(b) :
+            return(b)
+    return("Entrée/sortie invalide")
 
 def id_portion(a):
+    '''retourne à quel portion de route appartient l'entier ou le nom de sortie "a" '''
     a = transforme(a)
     for i in range(5):
         if a in P[i][0]:
             return(i)
 
 def position_portion(a):
+    '''retourne l'indice de a(entier/nom de sortie) dans la portion de route auquel il appartient'''
     a = transforme(a)
     i_a = id_portion(a)
     for j in range(len(P[i_a][0])):
@@ -167,12 +185,15 @@ def position_portion(a):
             return(j)
 
 def r(L):
+    '''renverse une liste'''
     a = [0]*(len(L))
     for i in range(len(L)):
         a[-(i+1)] = L[i]
     return(a)
 
 def chemin(e,s): 
+    '''retourne le trajet des sorties (entier dans la "liste sortie") 
+    entre l'entré/sortie (entier/ou nom:string)'''
     e = transforme(e)
     s = transforme(s)
     i_e = id_portion(e)
@@ -217,26 +238,75 @@ def chemin(e,s):
             return( r(P[i_e][0][min_pe:pp_e+1]) + r(P[2][0]) + r(P[i_s][0][pp_s:max_ps+1]))
 
 def trajet(e,s,k):
+    '''liste de tous les trajets possible en k sorties intermédiares 
+    entre l'entré/sortie (e/s sous forme entier/string)'''
+    e = transforme(e)
+    s = transforme(s)
     L = []
-    for i in(combinations(chemin(3,9),k+2)): 
-        if (list(i)[0]== e) and (list(i)[-1]==s):
+    for i in(combinations(chemin(e,s),k+2)): 
+        if list(i)[0]==e and list(i)[-1]==s:
             L.append(list(i))
     return(L)
 
 def cout_direct(e,s):
-    prix = price.loc[e,s]
+    '''retourne le coût d'un allé direct entre entré/sortie
+    (e/s sous forme int/string)'''
+    e = transforme(e)
+    s = transforme(s)+1
+    prix = price.iloc[e,s]
     return(prix)
+
 
 def prix_chemin(e,s,k):
     L = trajet(e,s,k)
     long_L = len(L)
     L2 = [0]*long_L
+    indice = 0
+    prix = 1000
     for i in range(long_L):
         L_c = L[i]
         prix_c = 0
         for j in range(len(L_c)-1):
-            prix_c += cout_direct(L_c[j],L_c[j+1])
+            prix_c = prix_c + cout_direct(L_c[j],L_c[j+1])
+        if prix > prix_c:
+            prix = prix_c
+            indice = i
         L2[i] = prix_c
+    return([L[indice],L2[indice]])
+
+
+
+def prixopt(A):
+    L=[]
+    somm1=1000
+    somm2=0
+    for i in range(len(A)):
+        for j in range(len(A[i])-1):
+            somm2+=price.iloc[A[i][j],A[i][j+1]+1]
+        if somm2<somm1 :
+            somm1=somm2
+            somm2=0
+            L=A[i]
+        else:
+            somm2=0
+    return [L,somm1]
+
+#%%
+def Finale(A,B,k):
+    L=[]
+    if A==B:
+        return "Vous devez choisir une sortie différente de votre point d'entrée"
+    for i in range(k+1):
+        L.append(prixopt(trajet(A,B,i)))
+    a=prixopt(trajet(A,B,0))
+    for j in range(len(L)):
+        if L[j][1]<a[1]:
+            a=L[j]
+    a.append(len(a[0])-2)
+    return a
+
+
+
 
 
 def sortie_moins_cher(LB):
@@ -320,4 +390,6 @@ def dijkstra_etape(k,trajet,list_p):
     i = 0
     for i in range(len(l)):
         if p < list[i+1]:
+
+# carte interactive 
 
