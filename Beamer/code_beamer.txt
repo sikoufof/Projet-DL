@@ -1,0 +1,80 @@
+\documentclass{beamer}
+  \usepackage[utf8]{inputenc}
+  \usetheme{Warsaw}
+
+  \title{Projet développement logiciel }
+  \author{FOFANA SIKOU et PRALON NICOLAS  }\institute{Faculté des sciences de Montpellier, département de Mathématiques}
+
+  \begin{document}
+
+  \begin{frame}
+  \titlepage
+  \end{frame}
+
+  \begin{frame}
+   \frametitle{ PLAN }
+  \begin{enumerate}
+      \item {Introduction}
+      \item {Nettoyage des données}
+      \item {Création des dataframes}
+       \item {visualisation des graphes}
+       \item {Conclusion}
+      
+      
+  \end{enumerate} 
+  \end{frame}
+
+  \begin{frame}
+   \frametitle{ Introduction }
+ 
+   L'objectif principal du projet est de décrire la politique tarifaire de la société ASF (Société Française des Routes) sur les autoroutes (A9, A61, A62, A66, A75 et A709) entre Montpellier, Perpignan, Pamier et Toulouse.\\
+   Pour se faire nous avions besoin de deux  datasets l'un pour les auroutes et l'autre pour les prix des péages, que nous avons recupéré à travers les liens fournis sur Moodle.
+   
+  
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{Nettoyage des données}
+     
+    
+    
+    
+    
+        
+    \end{frame}
+    
+    \begin{frame}
+    \frametitle{Création des dataframes}
+     
+    
+    
+    
+    
+        
+    \end{frame}
+   
+    \begin{frame}
+    \frametitle{Visualisation des graphes}
+     
+    
+    
+    
+    
+        
+    \end{frame}
+    
+     \begin{frame}
+    \frametitle{Conclusion}
+     
+    
+    
+    
+    
+        
+    \end{frame}
+   
+   
+   
+
+
+  \end{document}
