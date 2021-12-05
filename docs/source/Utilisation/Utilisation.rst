@@ -1,5 +1,5 @@
-Utilisation 
-============
+**Utilisation** 
+================
 
 Comment utiliser le logiciel "fat"?
 
