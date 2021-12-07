@@ -1,5 +1,5 @@
-**Utilisation** 
-================
+**Conseils d'utilisation** 
+===========================
 
 Comment utiliser le logiciel "fat"?
 

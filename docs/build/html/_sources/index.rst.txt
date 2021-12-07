@@ -8,9 +8,17 @@ PROJET_HAX712X_2021
 
 ******************************************************
 
-**Conception d'un logiciel pour la compagnie ASF**
-===================================================
+**Conception d'un package python pour la compagnie ASF**
+============================================================
 
+
+**Lien Github** : https://github.com/sikoufof/Projet-DL.git
+------------------------------------------------------------
+
+
+.. Note::
+
+   Les packages que nous avons utilisé dans ce projet : ``Pandas``, ``folium``, ``osmox``
 
 
 .. toctree::
@@ -29,15 +37,16 @@ PROJET_HAX712X_2021
    :caption: Objectif 
    
    Objectif/Objectif
+   
 
    
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: Demarche
+   :caption: Methodologie
 
-   Demarche/Demarche
+   Methodologie/Methodologie
 
 
 .. toctree::
@@ -49,7 +58,7 @@ PROJET_HAX712X_2021
 
 .. toctree::
    :maxdepth: 2
-   :caption: Utilisation
+   :caption: Conseils d'utilisation
 
    Utilisation/Utilisation   
 
