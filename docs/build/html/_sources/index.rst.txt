@@ -8,17 +8,18 @@ PROJET_HAX712X_2021
 
 ******************************************************
 
-**Conception d'un package python pour la compagnie ASF**
-============================================================
+**Conception d'un package python concernant la politique tarifaire de la compagnie ASF**
+==========================================================================================
 
+.. Note::
 
 **Lien Github** : https://github.com/sikoufof/Projet-DL.git
-------------------------------------------------------------
+
 
 
 .. Note::
 
-   Les packages que nous avons utilisé dans ce projet : ``Pandas``, ``folium``, ``osmox``
+   Les packages que nous avons utilisé dans ce projet : ``Pandas``, ``folium``, ``osmonx``
 
 
 .. toctree::
@@ -76,3 +77,8 @@ PROJET_HAX712X_2021
    
    Contacts/Contacts
 
+.. toctree::
+   :maxdepth: 2
+   :caption: References 
+   
+   References/References

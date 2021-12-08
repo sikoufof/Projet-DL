@@ -69,6 +69,86 @@
   <div class="section" id="demarche">
 <h1><strong>Demarche</strong><a class="headerlink" href="#demarche" title="Lien permanent vers ce titre">¶</a></h1>
 <p>Il vous suffira de téléchager les données que nous avons utilisées pour la réalisation de ce projet.</p>
+<p>Dans cette partie, vous aurez les codes python essentiels qui nous a permis de réaliser ce projet.</p>
+<div class="section" id="importation-des-donnees">
+<h2><strong>Importation des données</strong><a class="headerlink" href="#importation-des-donnees" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dta1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;gares-peage-2019.csv&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span>
+<span class="n">dta1</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39; NomGare &#39;</span><span class="p">:</span><span class="s1">&#39;NomGare&#39;</span><span class="p">},</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<span class="n">data_co</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;coordonnees.csv&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+<span class="n">price</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;DataFrame_price.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+<span class="n">price</span> <span class="o">=</span> <span class="n">price</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">price</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="n">data_co</span><span class="o">.</span><span class="n">NOMGARE</span><span class="p">))</span>
+<span class="n">price</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data_co</span><span class="o">.</span><span class="n">NOMGARE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creation-du-tableau-des-distances-et-extraction-des-donnees-relatives-aux-autoroutes">
+<h2><strong>Création du tableau des distances et Extraction des données relatives aux autoroutes</strong><a class="headerlink" href="#creation-du-tableau-des-distances-et-extraction-des-donnees-relatives-aux-autoroutes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Il doit y avoir une valeur x et y dans le csv sous forme de string:'2' à la place de seulement 2, ex dta1.loc[0,'x']='2'</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dta1</span><span class="o">.</span><span class="n">index</span><span class="p">)):</span>
+<span class="n">dta1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">dta1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39;.&#39;</span><span class="p">))</span>
+<span class="n">dta1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">dta1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span><span class="s1">&#39;.&#39;</span><span class="p">))</span>
+
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta1</span><span class="p">[(</span><span class="n">dta1</span><span class="o">.</span><span class="n">route</span><span class="o">==</span><span class="s2">&quot;A0009&quot;</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">dta1</span><span class="o">.</span><span class="n">route</span><span class="o">==</span><span class="s2">&quot;A0709&quot;</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">dta1</span><span class="o">.</span><span class="n">route</span><span class="o">==</span><span class="s2">&quot;A0061&quot;</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">dta1</span><span class="o">.</span><span class="n">route</span><span class="o">==</span><span class="s2">&quot;A0062&quot;</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">dta1</span><span class="o">.</span><span class="n">route</span><span class="o">==</span><span class="s2">&quot;A0075&quot;</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">dta1</span><span class="o">.</span><span class="n">route</span><span class="o">==</span><span class="s2">&quot;A0066&quot;</span><span class="p">)]</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="p">[[</span><span class="s1">&#39;route&#39;</span><span class="p">,</span><span class="s1">&#39;NomGare&#39;</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reaffectations-des-indices">
+<h2><strong>Reaffectations des indices</strong><a class="headerlink" href="#reaffectations-des-indices" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dta_routes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">dta_routes</span>
+</pre></div>
+</div>
+<p><strong>Transformation des coordonnées Lambert93 en coordonéees GPS</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Proj</span><span class="p">,</span> <span class="n">transform</span>
+
+<span class="n">inProj</span> <span class="o">=</span> <span class="n">Proj</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="s1">&#39;epsg:2154&#39;</span><span class="p">)</span>
+<span class="n">outProj</span> <span class="o">=</span> <span class="n">Proj</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="s1">&#39;epsg:4326&#39;</span><span class="p">)</span>
+<span class="n">x1</span><span class="o">=</span> <span class="mi">702805</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="mf">6230817.3</span>
+<span class="n">x2</span><span class="p">,</span><span class="n">y2</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">inProj</span><span class="p">,</span><span class="n">outProj</span><span class="p">,</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">)</span>
+<span class="mi">702805</span><span class="p">,</span><span class="mi">6230817</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+<span class="n">inProj</span> <span class="o">=</span> <span class="n">Proj</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="s1">&#39;epsg:2154&#39;</span><span class="p">)</span>
+<span class="n">outProj</span> <span class="o">=</span> <span class="n">Proj</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="s1">&#39;epsg:4326&#39;</span><span class="p">)</span>
+<span class="n">GPS</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">GPS_x</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">GPS_y</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dta_routes</span><span class="o">.</span><span class="n">index</span><span class="p">)):</span>
+<span class="n">GPS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transform</span><span class="p">(</span><span class="n">inProj</span><span class="p">,</span><span class="n">outProj</span><span class="p">,</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+<span class="n">GPS</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">GPS</span><span class="p">)):</span>
+<span class="n">dta_routes</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">],</span><span class="n">dta_routes</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">GPS</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="n">dta_routes</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="suppression-des-autoroutes-non-concernees">
+<h2><strong>Suppression des autoroutes non concernées</strong><a class="headerlink" href="#suppression-des-autoroutes-non-concernees" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">31</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">33</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">34</span><span class="p">)</span>
+<span class="n">dta_routes</span> <span class="o">=</span> <span class="n">dta_routes</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -77,7 +157,19 @@
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="../index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#"><strong>Demarche</strong></a><ul>
+<li><a class="reference internal" href="#importation-des-donnees"><strong>Importation des données</strong></a></li>
+<li><a class="reference internal" href="#creation-du-tableau-des-distances-et-extraction-des-donnees-relatives-aux-autoroutes"><strong>Création du tableau des distances et Extraction des données relatives aux autoroutes</strong></a></li>
+<li><a class="reference internal" href="#reaffectations-des-indices"><strong>Reaffectations des indices</strong></a></li>
+<li><a class="reference internal" href="#suppression-des-autoroutes-non-concernees"><strong>Suppression des autoroutes non concernées</strong></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <div class="sphinxprev">
     <h4>Previous page</h4>
     <p class="topless"><a href="../Objectif/Objectif.html"
