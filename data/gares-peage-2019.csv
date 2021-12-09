@@ -1,4 +1,4 @@
-dateReferentiel;route;pr;depPr;concessionPr;abs;cumul;x;y;z;cote; Echangeur ; Type ; Nom gare ; Site ;Departement;Gestionnaire
+dateReferentiel;route;pr;depPr;concessionPr;abs;cumul;x;y;z;cote; Echangeur ; Type ; Nomgare ; Site ;Departement;Gestionnaire
 01/01/2019;A0001;27;95;C;873;27748;667208,81;6887489,88;0;D;;Gare sur bretelle d'echangeur                                                                       ;SAINT WITZ (ENTREE);Gare isolee;95;SANEF
 01/01/2019;A0001;42;60;C;426;42301;671659,72;6900724,84;0;I;SENLIS SUD;Sur echangeur (diffuseur)                                                                           ;SENLIS BONSECOURS;Gare isolee;60;SANEF
 01/01/2019;A0001;44;60;C;120;43995;672895,5;6901827,49;0;I;;Barriere pleine voie sur l autoroute;CHAMANT;Gare principale d'un site de plusieurs gares;60;SANEF
