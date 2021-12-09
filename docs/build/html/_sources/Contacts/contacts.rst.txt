@@ -3,6 +3,6 @@
 
 
 Vous trouverez les contacts des concepteurs du logiciel "fat"
- fofanasikou89@gmail.com 
+ sikou.fofana01@etu.umontpellier.fr
  
  pralon.nicolas@etu.umontpellier.fr

@@ -1,10 +1,13 @@
-**Quelques exemples**
-===========================
+**Exemples de graphiques**
+====================================
 
-**Exemple 1**
---------------
-**Exemple 2**
---------------
+ 
 
-Nous vous présentons un aperçu de ce que le logiciel produit comme résultat.
+**Exemple 1**  : 
+--------------
+Un aperçu de la carte interactive
+
+**Exemple 2**  : 
+--------------
+Un aperçu de l'algorithme d'optimisation sur le prix.
 

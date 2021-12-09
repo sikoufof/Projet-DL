@@ -1,25 +1,13 @@
-. projet_delevop documentation master file, created by
-   sphinx-quickstart on Sat Nov 27 22:04:31 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+
 
 ******************************************************
 PROJET_HAX712X_2021 
-
 ******************************************************
 
 **Conception d'un package python concernant la politique tarifaire de la compagnie ASF**
 ==========================================================================================
 
-.. Note::
 
-**Lien Github** : https://github.com/sikoufof/Projet-DL.git
-
-
-
-.. Note::
-
-   Les packages que nous avons utilisé dans ce projet : ``Pandas``, ``folium``, ``osmonx``
 
 
 .. toctree::
@@ -59,7 +47,7 @@ PROJET_HAX712X_2021
 
 .. toctree::
    :maxdepth: 2
-   :caption: Conseils d'utilisation
+   :caption: Utilisation
 
    Utilisation/Utilisation   
 
@@ -79,6 +67,6 @@ PROJET_HAX712X_2021
 
 .. toctree::
    :maxdepth: 2
-   :caption: References 
+   :caption: Références 
    
    References/References
