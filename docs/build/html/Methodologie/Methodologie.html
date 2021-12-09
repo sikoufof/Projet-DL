@@ -76,10 +76,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>Documentation</strong></a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#importation-des-donnees"><strong>Importation des données</strong></a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>Documentation</strong></a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contacts</span></p>
 <ul>
@@ -128,18 +125,43 @@
 <h1><strong>Documentation</strong><a class="headerlink" href="#documentation" title="Lien permanent vers ce titre">¶</a></h1>
 <p>La démarche apportée est la suivante :
 On décide de partitionner les portions de en 5 parties</p>
-<div class="section" id="importation-des-donnees">
-<h2><strong>Importation des données</strong><a class="headerlink" href="#importation-des-donnees" title="Lien permanent vers ce titre">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dta1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;gares-peage-2019.csv&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span>
-<span class="n">dta1</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39; NomGare &#39;</span><span class="p">:</span><span class="s1">&#39;NomGare&#39;</span><span class="p">},</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">data_co</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;coordonnees.csv&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
-<span class="n">price</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;DataFrame_price.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
-<span class="n">price</span> <span class="o">=</span> <span class="n">price</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">price</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="n">data_co</span><span class="o">.</span><span class="n">NOMGARE</span><span class="p">))</span>
-<span class="n">price</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data_co</span><span class="o">.</span><span class="n">NOMGARE</span><span class="p">)</span>
+<p>Dans cette partie de documentation, nous allons présenter les parties principales du code utilisés,
+l'entiéreté du code est disponlible sur le lien GitHub, ces différentes parties vont permettre à la finalité
+d'obtenir ,par exemple, une représentation cartographiée d'un itinéiare ou encore de calculer l'itinéraire
+le moins coûteux pour les automobilistes</p>
+<p>La liste des packages importé sont disponibles dans le code source du projet.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fonction</span> <span class="n">chemin</span> <span class="p">:</span>
+
+<span class="n">Arguments</span> <span class="p">:</span> <span class="p">(</span><span class="n">Entrée</span> <span class="o">=</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Sortie</span> <span class="o">=</span> <span class="nb">str</span><span class="p">)</span>
+
+<span class="n">Renvoie</span> <span class="p">:</span> <span class="p">(</span><span class="n">List</span><span class="p">)</span> <span class="n">Liste</span> <span class="n">d</span> <span class="n">entier</span>
 </pre></div>
 </div>
+<p>La fonction chemin va permettre de lister l'ensemble des sorties intermédiaires (entrée/sortie inclus) d'un trajet
+.. code-block:: python</p>
+<blockquote>
+<div><p>Voici un exemple d'utilisation : chemin('VENDARGUES','BRAM') -&gt; [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 20, 21, 22, 23]</p>
+</div></blockquote>
+<p>Pour décoder les valeurs on peut utiliser la fonction</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transforme</span> <span class="p">:</span> <span class="p">(</span><span class="n">Entrée</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</pre></div>
 </div>
+<p>cette fonction permet d'obtenir le trajet le moins cher sous la conditions de pouvoir
+effectuer k sortie entre temps, elle donne également le prix du trajet</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Voici</span> <span class="n">un</span> <span class="n">exemple</span> <span class="n">d</span><span class="s1">&#39;utilisation chemin_opt(&#39;</span><span class="n">VENDARGUES</span><span class="s1">&#39;,&#39;</span><span class="n">BRAM</span><span class="s1">&#39;,3) -&gt; [[&#39;</span><span class="n">VENDARGUES</span><span class="s1">&#39;, &#39;</span><span class="n">AGDE</span><span class="s1">&#39;, &#39;</span><span class="n">BEZIERS</span> <span class="n">OUEST</span><span class="s1">&#39;, &#39;</span><span class="n">LEZIGNAN</span><span class="s1">&#39;, &#39;</span><span class="n">BRAM</span><span class="s1">&#39;], 13.5]</span>
+</pre></div>
+</div>
+<p>la suite des fonction disponibles vont permettre d'obtenir une représentation graphique du trajet
+et également une interface graphique.</p>
+<p>la classe Graph va permettre de créer une carte géographique et également de tracer l'itinéraire
+entre une entré et une sortie, voici un exemple d'utilsation :</p>
+<p>Enfin on peut obtnir une interface graphique avec interact</p>
+<p>Voici un exemple d'utilisation :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">interact</span><span class="p">(</span><span class="n">interface_carte</span><span class="p">,</span><span class="n">DEPART</span><span class="o">=</span><span class="n">villes_interface</span><span class="p">,</span><span class="n">ARRIVEE</span><span class="o">=</span><span class="n">villes_interface</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">25</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>la fonction interface_carte(Entrée = str, Sortie = str, k = int) -&gt; map</p>
+<p>permettant d'obtenir la carte graphique, le traket et le prix du chemin le moins couteux.</p>
 </div>
 
 
