@@ -18,9 +18,6 @@ PROJET_HAX712X_2021
 
 
 
-
-
-
 .. toctree::
    :maxdepth: 2
    :caption: Objectif 
@@ -28,35 +25,28 @@ PROJET_HAX712X_2021
    Objectif/Objectif
    
 
-   
-
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Methodologie
-
-   Methodologie/Methodologie
 
 
 .. toctree::
    :maxdepth: 2
    :caption: Installation 
 
-
    Installation/Installation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Utilisation
+   :caption: Documentation
 
-   Utilisation/Utilisation   
+   Methodologie/Methodologie
+
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: Visualisation
+   :caption:Conseils/Exemples
 
-   Visualisation/Visualisation
+   Utilisation/Utilisation   
+
 
 
 .. toctree::
@@ -65,8 +55,3 @@ PROJET_HAX712X_2021
    
    Contacts/Contacts
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Références 
-   
-   References/References

@@ -1,4 +1,4 @@
-**Conseils d'utilisation** 
+**Conseils/Exemples** 
 ===========================
 
 Comment utiliser ce package "fat"?

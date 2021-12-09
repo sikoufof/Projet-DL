@@ -13,13 +13,12 @@ sur les autoroutes (**A9**, **A61**, **A62**, **A66**, **A75** et **A709**) entr
 
 Aperçu du trajet
 
-Le but final c'est de concevoir un package python qui vous permettra de mieux comprendre la politique tarifaire de la comapgnie ASF. 
+Le but serait :
 
-il faut donc : 
-
-1. *La mise en place d'une carte graphique cliquable qui donnera la distance, le prix entre chaque entrée/sortie.*
-2. *L'affichage de la repartition des prix sur les autoroutes indiquées.* 
-3. *La conception d'un algorithme qui donnera le tarif optimal entre chaque entrée/sortie.*
+1. *de concevoir un package python qui vous permettra de mieux comprendre la politique tarifaire de la comapgnie ASF.* 
+2. *La mise en place d'une carte graphique cliquable qui donnera la distance, le prix entre chaque entrée/sortie.*
+3. *L'affichage de la repartition des prix sur les autoroutes indiquées.* 
+4. *La conception d'un algorithme qui donnera le tarif optimal entre chaque entrée/sortie.*
 
 
 

@@ -3,13 +3,11 @@
 
 **Objectif**
  
-**Methodologie**
- 
 **Installation**
+
+**Documentation**
  
-**Utilisation**
- 
-**Visualisation**
+**Conseils/Exemples**
  
 **Contacts**
  
