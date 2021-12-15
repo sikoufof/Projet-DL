@@ -130,6 +130,7 @@ for i in ['VENDARGUES','MONTPELLIER EST','MONTPELLIER SUD','MONTPELLIER OUEST','
 price2.to_csv('DataFrame_price2.csv')
 
 #%%
+
 #Créations des portions de routes en 5.
 
 Sorties=[0,1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,19,
@@ -165,7 +166,6 @@ def re_transforme(a):
         if a == transforme(b) :
             return(b)
     return("Entrée/sortie invalide")
-
 
 def id_portion(a):
     '''retourne à quel portion de route appartient l'entier ou le nom de sortie "a" '''
@@ -281,7 +281,6 @@ def chemin_k_sortie(e,s,k):
             indice = i
         L2[i] = prix_c
     return([L[indice],L2[indice]])
-
 
 def chemin_opt(e,s,k):
     '''retourne le meilleur trajet pour k sorties autorisées (e/s :str, k:int)'''
