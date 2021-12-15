@@ -14,4 +14,4 @@ between Montpellier, Perpignan, Pamier and Toulouse.
 - Dataframe cleanings used (together)
 - First Dataframe on the distances between each toll / exit (Nicolas)
 - Second Dataframe on the prices of each release (Sikou)
-- For the rest of the work we will do it together.
+- For the rest of the work, the code will be processed by Nicolas and the documentation by Sikou.
