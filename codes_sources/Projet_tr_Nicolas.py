@@ -1,3 +1,4 @@
+#%%
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -8,7 +9,6 @@ import openrouteservice
 import json
 
 from openrouteservice import convert
-from networkx.algorithms.shortest_paths.weighted import dijkstra_path
 from itertools import combinations
 from functools import partial
 from pyproj import CRS
@@ -22,14 +22,10 @@ pd.options.display.max_rows = 8
 #%%
 data_co = pd.read_csv("coordonnees.csv", sep = ',')
 
-#La colonne : Nom gare a été remplacé par NomGare dans le csv de base, y'a des espaces qui traines
 dta1 = pd.read_csv("gares-peage-2019.csv", sep = ';')
-
 dta1.rename({' NomGare ':'NOMGARE'},axis=1,inplace=True)
 dta1.columns = map(lambda x: str(x).upper(), dta1.columns)
 
-
-#il doit y avoir une valeur x et y dans le csv sous forme de string:'2' à la place de seulement 2, ex dta1.loc[0,'x']='2'
 for i in range(len(dta1.index)):
     dta1.loc[i,'X']=float(dta1.loc[i,'X'].replace(',','.'))
     dta1.loc[i,'Y']=float(dta1.loc[i,'Y'].replace(',','.'))
@@ -40,6 +36,7 @@ dta_routes = dta_routes[['ROUTE','NOMGARE','X','Y']]
 
 # reafections des indices
 dta_routes.reset_index(drop = True, inplace = True)
+
 
 for i in range(len(dta_routes.NOMGARE)):
     if dta_routes.loc[i,'NOMGARE'] in list(data_co.NOMGARE):
@@ -85,7 +82,6 @@ dta_routes.to_csv('routes.csv', sep = ';')
 #Effectuons la même démarche pour le second csv.
 
 dta2 = pd.read_csv("trace-du-reseau-autoroutier-doccitanie.csv", sep = ';')
-
 dta_routes2 = dta2[(dta2.nom_route=="A9")|(dta2.nom_route=="A709")|(dta2.nom_route=="A61")|(dta2.nom_route=="A62")|(dta2.nom_route=="A75")|(dta2.nom_route=="A66")]  
 
 #On peut remarquer que les noms et les numéros de sorties ne sont pas indiqués
@@ -94,10 +90,13 @@ dta_routes2 = dta2[(dta2.nom_route=="A9")|(dta2.nom_route=="A709")|(dta2.nom_rou
 
 price = pd.read_csv("DataFrame_price.csv", sep=';')
 price = price.fillna(0)
-
 price.columns = ([0]+list(data_co.NOMGARE))
 price.index = list(data_co.NOMGARE)
 del price[0]
+
+#NARBONNE SUD valeur  = 8.58,5 
+price.loc['VENDARGUES','NARBONNE SUD'] = '8.585'
+price.to_csv('Data_price.csv')
 #%%
 #On utilise pour la suite le tableau obtenue précédement, cependant pour plus de lisibilité
 #nettoyons légèrement le tableau des prix, en excluant les sorties de péage nulle.
@@ -128,17 +127,15 @@ for i in ['VENDARGUES','MONTPELLIER EST','MONTPELLIER SUD','MONTPELLIER OUEST','
 'SESQUIERES']:
     price2.drop(i,inplace=True)
 
-
-
-#Création de la base de données finale qui contient le prix des péages que nous avons retenus
 price2.to_csv('DataFrame_price2.csv')
 
 #%%
-
 #Créations des portions de routes en 5.
+
 Sorties=[0,1,2,3,4,6,7,8,9,10,11,12,13,14,15,16,19,
 20,21,22,23,24,25,26,27,29,30,31,33,35,36,37,38,39,40,
 41,42]
+
 P1 = [[0,1,2,3,4,6,7,8,9,10,11],[2,3],[]]
 P2 = [[12,13,14,15,16,19],[],[1,3]]
 P3 = [[20,21,22,23,24,25],[4,5],[1,2]]
@@ -146,6 +143,7 @@ P4 = [[26,27,28,29,30],[],[3,5]]
 P5 = [[31,33,35,36,37,38,39,40,41,42],[],[3,4]]
 P=[P1,P2,P3,P4,P5]
 PP = P1[0]+P2[0]+P3[0]+P4[0]+P5[0]
+
 
 def transforme(a):
     '''transforme le nom de la sortie en entier parmis la "liste Sortie" '''
@@ -158,6 +156,7 @@ def transforme(a):
             return(i)
     return("Entrée/sortie invalide")
 
+
 def re_transforme(a):
     if a in (list(data_co.NOMGARE)):
         return(a)
@@ -167,12 +166,14 @@ def re_transforme(a):
             return(b)
     return("Entrée/sortie invalide")
 
+
 def id_portion(a):
     '''retourne à quel portion de route appartient l'entier ou le nom de sortie "a" '''
     a = transforme(a)
     for i in range(5):
         if a in P[i][0]:
             return(i)
+
 
 def position_portion(a):
     '''retourne l'indice de a(entier/nom de sortie) dans la portion de route auquel il appartient'''
@@ -182,12 +183,14 @@ def position_portion(a):
         if a == P[i_a][0][j]:
             return(j)
 
+
 def r(L):
     '''renverse une liste'''
     a = [0]*(len(L))
     for i in range(len(L)):
         a[-(i+1)] = L[i]
     return(a)
+
 
 def chemin(e,s): 
     '''retourne le trajet des sorties (entier dans la "liste sortie") 
@@ -237,6 +240,7 @@ def chemin(e,s):
         else :
             return( r(P[i_e][0][min_pe:pp_e+1]) + r(P[2][0]) + r(P[i_s][0][pp_s:max_ps+1]))
 
+
 def trajet(e,s,k):
     '''liste de tous les trajets possible en k sorties intermédiares 
     entre l'entré/sortie (e/s sous forme entier/string)'''
@@ -248,21 +252,18 @@ def trajet(e,s,k):
             L.append(list(i))
     return(L)
 
+
 def cout_direct(e,s):
     '''retourne le coût d'un allé direct entre entré/sortie
     (e/s sous forme int/string)'''
     e = transforme(e)
     s = transforme(s)
-    prix = float(price.iloc[e,s])     
-    # les éléments du tableau price sont des numpy.float et non des float 
-    # pause problème lors d'opérations
+    prix = float(price.iloc[e,s]) # les éléments du tableau price sont des numpy.float et non des float 
     return(prix)
-
-#NARBONNE SUD valeur  = 8.58,5 
-price.loc['VENDARGUES','NARBONNE SUD'] = '8.585'
 
 
 def chemin_k_sortie(e,s,k):
+    '''retoune le trajet le moins cher pour exactement k sorties intermédiare, (e/s : str, k : int)'''
     e = transforme(e)
     s = transforme(s)
     L = trajet(e,s,k)
@@ -281,7 +282,9 @@ def chemin_k_sortie(e,s,k):
         L2[i] = prix_c
     return([L[indice],L2[indice]])
 
+
 def chemin_opt(e,s,k):
+    '''retourne le meilleur trajet pour k sorties autorisées (e/s :str, k:int)'''
     if e==s:
         return("Vous devez choisir une sortie différente de votre point d'entrée")
     opt = chemin_k_sortie(e,s,0)
@@ -300,10 +303,12 @@ def nb_sortie_possible(e,s):
 # carte interactive (Classe Graph)
 
 class Graph(object):
+    '''Classe de graphique'''
     def __init__(self):
         pass
 
     def carte(self,DEPART,ARRIVEE):
+        '''retourne la carte d'un trajet (DEPART/ARRIVEE : str)'''
 
         client = openrouteservice.Client(key='5b3ce3597851110001cf62486f5564a064e34f3895221e5a0d9a2405')
     
@@ -353,13 +358,18 @@ for i in [5,17,18,32,34]:
 villes_interface = list(villes_interface)
 
 def interface_carte(DEPART,ARRIVEE,k):
+    '''fonction utilisée pour les widjets:interact, (DEPART/ARRIVEE : str, k:int)'''
     a = nb_sortie_possible(DEPART,ARRIVEE)
     if k > a:
         return('le nombre de sortie maximum est', a,'sortie(s)' )
     a = chemin_opt(DEPART,ARRIVEE,k)
-    print('le trajet le moins cher pour', k, 'sortie est le trajet', a[0],'il vous coûtera', a[1],'Euros')
+    print('le trajet le moins cher pour', k)
+    print('sortie est le trajet')
+    print(a[0])
+    print('il vous coûtera', a[1],'Euros')
     b = Graph()
     b = b.carte(DEPART,ARRIVEE)
     return(b)
 
 interact(interface_carte,DEPART=villes_interface,ARRIVEE=villes_interface,k=(0,25))
+
